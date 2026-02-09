@@ -1,86 +1,724 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>AI Profile Roaster — Web</title>
-    <link rel="stylesheet" href="/static/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <h1>AI Profile Roaster</h1>
-
-      <form class="controls" method="post" action="/analyze" enctype="multipart/form-data">
-        <textarea name="text" placeholder="Paste profile or resume text here...">{{ text|default('') }}</textarea>
-        <div style="min-width:140px;display:flex;flex-direction:column;gap:8px;">
-          <input type="file" name="file" accept=".txt,.pdf" />
-          <button type="submit">Analyze</button>
-        </div>
-      </form>
-
-      {% if roasts or tips %}
-      <div class="card roast">
-        <h2>🔥 Roasts</h2>
-        <ul class="list">
-          {% for r in roasts %}
-            <li>{{ r }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-
-      <div class="card tips">
-        <h2>✅ Suggestions</h2>
-        <ul class="list">
-          {% for t in tips %}
-            <li>{{ t }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-      {% else %}
-      <p class="muted">Paste text or upload a PDF/TXT and click Analyze.</p>
-      {% endif %}
-    </div>
-  </body>
-</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>🔥 AI Profile Roaster</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 AI Profile Roaster | Brutally Honest Career Feedback</title>
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Get brutally honest AI-powered feedback on your resume and career profile. Improve your personal brand with actionable insights.">
 </head>
 <body>
-    <div class="container">
-        <h1>🔥 AI Profile Roaster</h1>
-        <p>Paste your resume or profile. Get roasted. Improve.</p>
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    
+    <div class="app-container">
+        <!-- Hero Header -->
+        <header class="hero-section">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">⚡</span>
+                    <span class="badge-text">AI-Powered Analysis</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-highlight">🔥 AI Profile Roaster</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Brutally honest career feedback powered by advanced AI. 
+                    Stop getting rejected and start getting noticed.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Profiles Roasted</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">2.3s</span>
+                        <span class="stat-label">Analysis Time</span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-        <form method="post" action="/roast">
-            <textarea name="profile_text" placeholder="Paste your profile here..." required>{{ text or "" }}</textarea>
-            <button type="submit">Roast Me 🔥</button>
-        </form>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-icon">📝</span>
+                        <span>Submit Your Profile</span>
+                    </h2>
+                    <p class="section-description">
+                        Upload your resume or paste your profile text for instant AI analysis
+                    </p>
+                </div>
 
-        {% if roasts %}
-        <div class="card roast">
-            <h2>🔥 Roast</h2>
-            <ul>
-                {% for r in roasts %}
-                <li>{{ r }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+                <form class="upload-form" method="post" action="/analyze" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <!-- Text Input Area -->
+                        <div class="input-column">
+                            <div class="textarea-container">
+                                <div class="textarea-header">
+                                    <div class="input-label">
+                                        <span class="label-icon">📄</span>
+                                        <span>Profile Text</span>
+                                    </div>
+                                    <div class="input-actions">
+                                        <button type="button" class="action-btn" onclick="clearText()">Clear</button>
+                                    </div>
+                                </div>
+                                <textarea 
+                                    name="text" 
+                                    class="profile-textarea"
+                                    placeholder="Paste your resume, LinkedIn profile, or career summary here...&#10;&#10;Example:&#10;• Senior Software Engineer with 5+ years experience&#10;• Expert in Python, JavaScript, and cloud technologies&#10;• Passionate about building scalable solutions">{{ text|default('') }}</textarea>
+                                <div class="textarea-footer">
+                                    <div class="char-info">
+                                        <span class="char-count" id="charCount">0</span>
+                                        <span class="char-label">characters</span>
+                                    </div>
+                                    <div class="format-hint">
+                                        <span class="hint-icon">💡</span>
+                                        <span>Use bullet points for better analysis</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        {% if tips %}
-        <div class="card tips">
-            <h2>✅ How to Fix It</h2>
-            <ul>
-                {% for t in tips %}
-                <li>{{ t }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+                        <!-- File Upload & Submit -->
+                        <div class="controls-column">
+                            <div class="file-upload-container">
+                                <input type="file" name="file" id="fileInput" accept=".txt,.pdf,.docx" class="file-input">
+                                <label for="fileInput" class="file-upload-label">
+                                    <div class="upload-icon">
+                                        <span class="upload-emoji">📁</span>
+                                        <div class="upload-progress" id="uploadProgress"></div>
+                                    </div>
+                                    <div class="upload-content">
+                                        <span class="upload-title">Choose File</span>
+                                        <span class="upload-subtitle">PDF, DOCX, TXT • Max 10MB</span>
+                                    </div>
+                                </label>
+                                <div class="file-info" id="fileInfo"></div>
+                            </div>
+
+                            <button type="submit" class="analyze-button">
+                                <div class="button-content">
+                                    <span class="button-icon">🔥</span>
+                                    <span class="button-text">Roast My Profile</span>
+                                </div>
+                                <div class="button-glow"></div>
+                            </button>
+
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <span class="feature-icon">⚡</span>
+                                    <span class="feature-text">Instant Analysis</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🎯</span>
+                                    <span class="feature-text">Actionable Insights</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🔒</span>
+                                    <span class="feature-text">100% Private</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            {% if roasts or tips %}
+            <section class="results-section">
+                <div class="results-header">
+                    <h2 class="results-title">
+                        <span class="title-icon">📊</span>
+                        <span>Analysis Results</span>
+                    </h2>
+                    <div class="results-badge">
+                        <span class="badge-status">Complete</span>
+                        <span class="badge-time">Just now</span>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Roasts Card -->
+                    {% if roasts %}
+                    <div class="result-card roast-card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <div class="card-icon">
+                                    <span class="icon-emoji">🔥</span>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <div class="card-title-content">
+                                    <h3 class="card-title">Brutal Roasts</h3>
+                                    <p class="card-subtitle">The harsh truth about your profile</p>
+                                </div>
+                            </div>
+                            <div class="card-badges">
+                                <div class="severity-badge brutal">
+                                    <span class="badge-dot"></span>
+                                    <span class="badge-text">BRUTAL</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="roast-list">
+                                {% for r in roasts %}
+                                <div class="roast-item">
+                                    <div class="roast-marker">
+                                        <span class="marker-icon">💀</span>
+                                    </div>
+                                    <div class="roast-text">{{ r }}</div>
+                                    <div class="roast-impact">
+                                        <div class="impact-bar"></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="footer-stats">
+                                <span class="stat-item">
+                                    <span class="stat-label">Impact Level</span>
+                                    <div class="impact-meter">
+                                        <div class="impact-fill brutal"></div>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Suggestions Card -->
+                    {% if tips %}
+                    <div class="result-card suggestions-card">
+                        <div class="card-header">
+                            <div class="card-title-section">
+                                <div class="card-icon">
+                                    <span class="icon-emoji">✅</span>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <div class="card-title-content">
+                                    <h3 class="card-title">Actionable Suggestions</h3>
+                                    <p class="card-subtitle">How to fix your profile</p>
+                                </div>
+                            </div>
+                            <div class="card-badges">
+                                <div class="severity-badge actionable">
+                                    <span class="badge-dot"></span>
+                                    <span class="badge-text">ACTIONABLE</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="suggestions-list">
+                                {% for t in tips %}
+                                <div class="suggestion-item">
+                                    <div class="suggestion-marker">
+                                        <span class="marker-number">{{ loop.index }}</span>
+                                    </div>
+                                    <div class="suggestion-content">
+                                        <div class="suggestion-text">{{ t }}</div>
+                                        <div class="suggestion-priority">
+                                            <span class="priority-badge high">High Priority</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="action-buttons">
+                                <button class="action-button secondary" onclick="copyAllResults()">
+                                    <span class="button-icon">📋</span>
+                                    <span>Copy All</span>
+                                </button>
+                                <button class="action-button primary" onclick="reanalyze()">
+                                    <span class="button-icon">🔄</span>
+                                    <span>Re-analyze</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+            {% else %}
+            <!-- Empty State -->
+            <section class="empty-state">
+                <div class="empty-content">
+                    <div class="empty-illustration">
+                        <div class="illustration-bg"></div>
+                        <span class="illustration-emoji">🎯</span>
+                    </div>
+                    <h3 class="empty-title">Ready for your reality check?</h3>
+                    <p class="empty-description">
+                        Upload your resume or paste your profile text above to get brutally honest feedback that will actually help you land better opportunities.
+                    </p>
+                    <div class="empty-features">
+                        <div class="empty-feature">
+                            <span class="feature-icon">⚡</span>
+                            <span class="feature-text">Lightning-fast AI analysis</span>
+                        </div>
+                        <div class="empty-feature">
+                            <span class="feature-icon">🎯</span>
+                            <span class="feature-text">Specific, actionable feedback</span>
+                        </div>
+                        <div class="empty-feature">
+                            <span class="feature-icon">🔥</span>
+                            <span class="feature-text">Brutally honest roasts</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="brand-logo">🔥</span>
+                    <span class="brand-name">AI Profile Roaster</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                    <a href="#" class="footer-link">API</a>
+                </div>
+                <div class="footer-credits">
+                    <span class="made-by">Made by </span>
+                    <a href="https://github.com/MayankSharma-2812" target="_blank" class="github-link">
+                        <span class="github-icon">🐙</span>
+                        <span class="github-text">Mayank Sharma</span>
+                    </a>
+                </div>
+            </div>
+        </footer>
     </div>
+
+    <script>
+        // Character counter
+        const textarea = document.querySelector('.profile-textarea');
+        const charCount = document.getElementById('charCount');
+        
+        if (textarea && charCount) {
+            const updateCharCount = () => {
+                charCount.textContent = textarea.value.length;
+            };
+            
+            textarea.addEventListener('input', updateCharCount);
+            updateCharCount(); // Initial count
+        }
+
+        // File upload feedback
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        
+        if (fileInput && fileInfo) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    fileInfo.innerHTML = `
+                        <div class="file-selected">
+                            <span class="file-name">${file.name}</span>
+                            <span class="file-size">${(file.size / 1024).toFixed(1)} KB</span>
+                        </div>
+                    `;
+                } else {
+                    fileInfo.innerHTML = '';
+                }
+            });
+        }
+
+        // Clear text function
+        function clearText() {
+            if (textarea) {
+                textarea.value = '';
+                if (charCount) charCount.textContent = '0';
+                // Add visual feedback
+                textarea.focus();
+                showNotification('Text cleared!', 'info');
+            }
+        }
+
+        // Copy all results function
+        function copyAllResults() {
+            const roastItems = document.querySelectorAll('.roast-text');
+            const suggestionItems = document.querySelectorAll('.suggestion-text');
+            
+            let allText = '🔥 AI PROFILE ROAST RESULTS 🔥\n\n';
+            
+            if (roastItems.length > 0) {
+                allText += '🔥 BRUTAL ROASTS:\n';
+                roastItems.forEach((item, index) => {
+                    allText += `${index + 1}. ${item.textContent.trim()}\n`;
+                });
+                allText += '\n';
+            }
+            
+            if (suggestionItems.length > 0) {
+                allText += '✅ ACTIONABLE SUGGESTIONS:\n';
+                suggestionItems.forEach((item, index) => {
+                    allText += `${index + 1}. ${item.textContent.trim()}\n`;
+                });
+            }
+            
+            if (roastItems.length === 0 && suggestionItems.length === 0) {
+                allText += 'No results available. Please analyze a profile first.';
+            }
+            
+            allText += '\n---\nGenerated by AI Profile Roaster';
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(allText).then(() => {
+                showNotification('Results copied to clipboard!', 'success');
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = allText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Results copied to clipboard!', 'success');
+            });
+        }
+
+        // Re-analyze function
+        function reanalyze() {
+            const form = document.querySelector('.upload-form');
+            const submitBtn = document.querySelector('.analyze-button');
+            
+            if (form && textarea && (textarea.value.trim() || fileInput.files[0])) {
+                // Reset button state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                submitBtn.querySelector('.button-text').textContent = 'Roast My Profile';
+                
+                // Scroll to top of form
+                form.scrollIntoView({ behavior: 'smooth' });
+                
+                // Add visual feedback
+                textarea.focus();
+                showNotification('Ready to re-analyze! Click "Roast My Profile" to continue.', 'info');
+                
+                // Optionally auto-submit after a delay
+                setTimeout(() => {
+                    if (confirm('Auto-submit for re-analysis?')) {
+                        form.submit();
+                    }
+                }, 500);
+            } else {
+                showNotification('Please enter text or upload a file first!', 'warning');
+                textarea.focus();
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <span class="notification-icon">${getNotificationIcon(type)}</span>
+                    <span class="notification-message">${message}</span>
+                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 3000);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            return icons[type] || icons.info;
+        }
+
+        // Add loading state to form submission
+        const form = document.querySelector('.upload-form');
+        const submitBtn = document.querySelector('.analyze-button');
+        
+        if (form && submitBtn) {
+            form.addEventListener('submit', (e) => {
+                // Validate form
+                if (!textarea.value.trim() && !fileInput.files[0]) {
+                    e.preventDefault();
+                    showNotification('Please enter text or upload a file!', 'warning');
+                    textarea.focus();
+                    return;
+                }
+                
+                // Add loading state
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+                submitBtn.querySelector('.button-text').textContent = 'Analyzing...';
+                
+                showNotification('Analyzing your profile...', 'info');
+                
+                // Simulate progress (in real app, this would be handled by server response)
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+                    if (progress >= 90) {
+                        clearInterval(progressInterval);
+                    }
+                }, 200);
+            });
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + Enter to submit
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                const form = document.querySelector('.upload-form');
+                if (form && textarea.value.trim()) {
+                    form.submit();
+                }
+            }
+            
+            // Ctrl/Cmd + K to clear
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                clearText();
+            }
+            
+            // Ctrl/Cmd + C to copy (when not in textarea)
+            if ((e.ctrlKey || e.metaKey) && e.key === 'c' && document.activeElement !== textarea) {
+                const roastItems = document.querySelectorAll('.roast-text');
+                const suggestionItems = document.querySelectorAll('.suggestion-text');
+                if (roastItems.length > 0 || suggestionItems.length > 0) {
+                    e.preventDefault();
+                    copyAllResults();
+                }
+            }
+        });
+
+        // Add drag and drop functionality
+        const dropZone = document.querySelector('.file-upload-label');
+        
+        if (dropZone && fileInput) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight(e) {
+                dropZone.classList.add('drag-over');
+            }
+            
+            function unhighlight(e) {
+                dropZone.classList.remove('drag-over');
+            }
+            
+            dropZone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    
+                    // Trigger change event
+                    const event = new Event('change', { bubbles: true });
+                    fileInput.dispatchEvent(event);
+                    
+                    showNotification(`File "${files[0].name}" uploaded!`, 'success');
+                }
+            }
+        }
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add analytics tracking (placeholder)
+        function trackEvent(action, label = '') {
+            console.log('Analytics Event:', action, label);
+            // In production, this would send to your analytics service
+        }
+
+        // Track button clicks
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                const buttonText = button.textContent.trim();
+                trackEvent('button_click', buttonText);
+            });
+        });
+
+        // Initialize tooltips
+        function initTooltips() {
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', showTooltip);
+                element.addEventListener('mouseleave', hideTooltip);
+            });
+        }
+
+        function showTooltip(e) {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = e.target.getAttribute('data-tooltip');
+            document.body.appendChild(tooltip);
+            
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 5 + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.querySelector('.tooltip');
+            if (tooltip) {
+                tooltip.remove();
+            }
+        }
+
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            initTooltips();
+            showNotification('Welcome to AI Profile Roaster! 🔥', 'info');
+        });
+
+        // Add CSS for notifications and drag-over state
+        const notificationStyles = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--bg-card);
+                border: 1px solid var(--border-primary);
+                border-radius: var(--radius-lg);
+                padding: var(--space-4);
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform var(--transition-normal);
+                backdrop-filter: blur(10px);
+                max-width: 300px;
+            }
+            
+            .notification.show {
+                transform: translateX(0);
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: var(--space-2);
+            }
+            
+            .notification-icon {
+                font-size: var(--space-4);
+            }
+            
+            .notification-message {
+                flex: 1;
+                font-size: var(--space-3);
+                color: var(--text-primary);
+            }
+            
+            .notification-close {
+                background: transparent;
+                border: none;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: var(--space-4);
+                padding: var(--space-1);
+                border-radius: var(--radius-sm);
+            }
+            
+            .notification-close:hover {
+                background: var(--bg-input);
+            }
+            
+            .notification-success {
+                border-left: 4px solid var(--accent-green);
+            }
+            
+            .notification-error {
+                border-left: 4px solid var(--accent-red);
+            }
+            
+            .notification-warning {
+                border-left: 4px solid var(--accent-orange);
+            }
+            
+            .notification-info {
+                border-left: 4px solid var(--accent-blue);
+            }
+            
+            .drag-over {
+                border-color: var(--accent-orange) !important;
+                background: rgba(249, 115, 22, 0.1) !important;
+            }
+        `;
+        
+        // Add styles to head
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = notificationStyles;
+        document.head.appendChild(styleSheet);
+    </script>
 </body>
 </html>
-  

@@ -2,6 +2,7 @@
 
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from roaster.ai_roaster import generate_ai_roasts, generate_ai_suggestions
@@ -13,10 +14,14 @@ Software Engineer with 5 years of experience in Python and JavaScript.
 Passionate about learning new technologies and working in team environments.
 """
 
-print("Testing AI roasts...")
-roasts = generate_ai_roasts(test_profile, num_roasts=2)
-print(f"Roasts: {roasts}")
+print("Testing AI roasts with new API key...")
+roasts = generate_ai_roasts(test_profile, num_roasts=3)
+print(f"✅ Generated {len(roasts)} roasts:")
+for i, roast in enumerate(roasts, 1):
+    print(f"{i}. {roast}")
 
-print("\nTesting AI suggestions...")
+print(f"\nTesting AI suggestions with new API key...")
 suggestions = generate_ai_suggestions(test_profile)
-print(f"Suggestions: {suggestions}")
+print(f"✅ Generated {len(suggestions)} suggestions:")
+for i, suggestion in enumerate(suggestions, 1):
+    print(f"{i}. {suggestion}")
