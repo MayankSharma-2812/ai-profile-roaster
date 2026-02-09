@@ -1,4 +1,0 @@
-I am a passionate and hardworking developer.
-I am a fast learner and team player.
-I know Python and Java.
-I improved test coverage by 30% and reduced latency by 20%.

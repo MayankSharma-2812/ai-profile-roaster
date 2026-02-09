@@ -1,0 +1,4 @@
+Senior Software Engineer with 6 years experience.
+Passionate team player and fast learner.
+Skilled in Python, AWS, Docker, and JavaScript.
+Led project that improved test coverage by 30% and reduced latency by 20%.

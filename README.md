@@ -31,29 +31,24 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Set Up OpenAI API Key (for AI roasts)
+### 4. Set Up Environment Variables
 
-Get your API key from [OpenAI](https://platform.openai.com/account/api-keys).
-
-Create a `.env` file in the project root:
+Create a `.env` file in the project root using the template:
 
 ```bash
 cp .env.example .env
-# Edit .env and add your API key
-echo "OPENAI_API_KEY=sk-..." >> .env
 ```
 
-Then export it:
+Then edit `.env` and add your API keys:
 
 ```bash
-export OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=sk-your-key-here
+GROQ_API_KEY=gsk-your-groq-key-here  # Optional: Free alternative to OpenAI
+FLASK_ENV=development
+SECRET_KEY=your-secret-key-here
 ```
 
-Or load it automatically (optional):
-
-```bash
-source .env
-```
+**⚠️ SECURITY**: Never commit `.env` to git. The file is automatically excluded.
 
 ### 5. (Optional) Install spaCy Model for Better NLP
 
@@ -137,6 +132,13 @@ Predefined roasts are still useful but not custom to your profile.
 | Variable         | Required | Description                                                                  |
 | ---------------- | -------- | ---------------------------------------------------------------------------- |
 | `OPENAI_API_KEY` | Optional | OpenAI API key for custom AI roasts. Without it, predefined roasts are used. |
+| `GROQ_API_KEY`   | Optional | Groq API key (free tier). Used if OpenAI not available.                      |
+| `FLASK_ENV`      | No       | `development` or `production` (default: `production`)                        |
+| `SECRET_KEY`     | Yes\*    | Secret key for sessions. Required in production.                             |
+| `PORT`           | No       | Server port (default: `8500`)                                                |
+| `HOST`           | No       | Server host (default: `0.0.0.0`)                                             |
+
+\*Required only in production mode.
 
 ## Troubleshooting
 
@@ -149,10 +151,40 @@ Predefined roasts are still useful but not custom to your profile.
 
 - Verify `OPENAI_API_KEY` is set: `echo $OPENAI_API_KEY`
 - Check your key is valid at https://platform.openai.com/account/api-keys
+- Try Groq API as a free alternative
 
 **Port 8500 already in use**
 
-- Change the port in `web/app.py` (line 50): `app.run(port=8501, ...)`
+- Change the port in `.env`: `PORT=8501`
+- Or kill existing process: `lsof -i :8500 && kill -9 <PID>`
+
+## Deployment
+
+### Quick Start with Docker
+
+```bash
+docker build -t ai-roaster .
+docker run -p 8500:8500 -e OPENAI_API_KEY=sk-... ai-roaster
+```
+
+### Heroku Deployment
+
+```bash
+heroku create your-app-name
+heroku config:set OPENAI_API_KEY=sk-...
+git push heroku main
+```
+
+### Production Server Deployment
+
+See [**DEPLOYMENT.md**](DEPLOYMENT.md) for complete deployment guide:
+
+- Heroku setup
+- Docker containerization
+- Traditional server (Ubuntu/Debian)
+- Nginx reverse proxy configuration
+- Security best practices
+- Performance optimization
 
 ## Project Structure
 
