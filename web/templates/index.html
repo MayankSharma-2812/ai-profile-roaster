@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AI Profile Roaster — Web</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>AI Profile Roaster</h1>
+
+      <form class="controls" method="post" action="/analyze" enctype="multipart/form-data">
+        <textarea name="text" placeholder="Paste profile or resume text here...">{{ text|default('') }}</textarea>
+        <div style="min-width:140px;display:flex;flex-direction:column;gap:8px;">
+          <input type="file" name="file" accept=".txt,.pdf" />
+          <button type="submit">Analyze</button>
+        </div>
+      </form>
+
+      {% if roasts or tips %}
+      <div class="card roast">
+        <h2>🔥 Roasts</h2>
+        <ul class="list">
+          {% for r in roasts %}
+            <li>{{ r }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="card tips">
+        <h2>✅ Suggestions</h2>
+        <ul class="list">
+          {% for t in tips %}
+            <li>{{ t }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <p class="muted">Paste text or upload a PDF/TXT and click Analyze.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>🔥 AI Profile Roaster</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 AI Profile Roaster</h1>
+        <p>Paste your resume or profile. Get roasted. Improve.</p>
+
+        <form method="post" action="/roast">
+            <textarea name="profile_text" placeholder="Paste your profile here..." required>{{ text or "" }}</textarea>
+            <button type="submit">Roast Me 🔥</button>
+        </form>
+
+        {% if roasts %}
+        <div class="card roast">
+            <h2>🔥 Roast</h2>
+            <ul>
+                {% for r in roasts %}
+                <li>{{ r }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if tips %}
+        <div class="card tips">
+            <h2>✅ How to Fix It</h2>
+            <ul>
+                {% for t in tips %}
+                <li>{{ t }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+  
